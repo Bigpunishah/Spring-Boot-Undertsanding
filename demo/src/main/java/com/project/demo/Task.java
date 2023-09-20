@@ -21,10 +21,12 @@ public class Task {
 
     @Id  //specifices that this is an id marker
     private ObjectId id;
-
+    private String taskId;
+    
     private List<String> tasks;
-
+    
     private List<String> priority;
+    //! CHECK SPELLING 5 TIMES 
 
     
 }
