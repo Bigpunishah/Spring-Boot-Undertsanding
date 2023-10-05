@@ -46,7 +46,17 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+	
+   <dependency>
+     <groupId>io.github.git-fudge</groupId>
+     <artifactId>new-artifact</artifactId>
+     <version>1.0.6</version>
+   </dependency>
+ </dependencies>
 
 	<build>
 		<plugins>
