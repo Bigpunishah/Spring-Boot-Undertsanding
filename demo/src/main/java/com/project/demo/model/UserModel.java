@@ -1,4 +1,4 @@
-package com.project.demo.user;
+package com.project.demo.model;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User  {
+public class UserModel  {
     // implements UserDetails
     @Id
     private String userId;
@@ -24,6 +24,6 @@ public class User  {
 
     private String password;
 
-    private List<String> role;
+    private List<String> roles;
    
 }

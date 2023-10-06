@@ -2,22 +2,23 @@ package com.project.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import lombok.RequiredArgsConstructor;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
+// import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
-@EnableMethodSecurity
 public class SecurityConfig {
 
     // Password encrypter
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -34,35 +35,18 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/newuser").permitAll()
                         .requestMatchers("/api/v1/user/login/authenticate").permitAll()
 
-                        .requestMatchers("/api/v1/user/**").hasAuthority("USER")
-                        .requestMatchers("/api/v1/tasks/**").hasAuthority("ADMIN")
-                        .requestMatchers("/task").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/user/**").hasAnyRole("USER")
+                        .requestMatchers("/api/v1/tasks/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/task").hasAnyRole("ADMIN")
 
                         .anyRequest().authenticated())
-                .formLogin(form -> form.loginPage("/login").permitAll()); // sending to html page
+                        .httpBasic(withDefaults())
+                        ;
+
+                // .formLogin(form -> form.loginPage("/login").permitAll()); // sending to html page
 
         return http.build();
     }
 
-    // todo This also works
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
-    // Exception {
-
-    // http.csrf(csrf -> csrf.disable());
-    // http.authorizeHttpRequests(auth -> auth.requestMatchers("/").permitAll());
-    // //Public access
-    // http.authorizeHttpRequests(auth ->
-    // auth.requestMatchers("/api/v1/user/login/authenticate").permitAll());
-    // http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-    // .formLogin(form -> form.loginPage("/login").permitAll());
-    // return http.build();
-
-    // has...() Takes "String" & .name() returns string
-    // hasAnyRole() multiple roles
-    // hasRole() one role
-    // hasAnyAuthority() multiple authorities allowed.
-    // hasAuthority() one authorirty allowed.
-    // }
-
+    
 }

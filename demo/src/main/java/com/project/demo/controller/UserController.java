@@ -1,4 +1,4 @@
-package com.project.demo.user;
+package com.project.demo.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.demo.data_transfer_object.LoginDto;
+import com.project.demo.model.UserModel;
+import com.project.demo.service.UserService;
+
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -26,14 +30,17 @@ public class UserController {
     private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/admin/allusers")
-    public ResponseEntity<List<User>> getAllUsers(){
-        return new ResponseEntity<List<User>>(userService.allUsers(), HttpStatus.OK);
+    public ResponseEntity<List<UserModel>> getAllUsers(){
+        return new ResponseEntity<List<UserModel>>(userService.allUsers(), HttpStatus.OK);
     }  
 
 
+    
+
+
     @GetMapping("/find")
-    public ResponseEntity<User> getUserByEmail(@RequestParam String email){
-        Optional<User> user = userService.findUserByEmail(email);
+    public ResponseEntity<UserModel> getUserByEmail(@RequestParam String email){
+        Optional<UserModel> user = userService.findUserByEmail(email);
 
         if(user.isEmpty()){
             return ResponseEntity.badRequest().build();
@@ -46,12 +53,12 @@ public class UserController {
 
     //Create new user
     @PostMapping("/newuser")
-    public ResponseEntity<User> createNewUser(@RequestBody User newUser) {
+    public ResponseEntity<UserModel> createNewUser(@RequestBody UserModel newUser) {
         // Get the email from the User object or modify the request JSON accordingly
         String email = newUser.getEmail();
 
         // Check if a user with the provided email already exists
-        Optional<User> existingUser = userService.findUserByEmail(email);
+        Optional<UserModel> existingUser = userService.findUserByEmail(email);
 
         // If the user already exists, return a Bad Request response
         if (existingUser.isPresent()) {
